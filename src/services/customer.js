@@ -1,5 +1,5 @@
 const omise = require("omise")({
-  secretKey: "skey_test_5x2aulaz757hwjvfypb",
+  secretKey: process.env.OMISE_SECRET_KEY,
   omiseVersion: "2019-05-29",
 });
 
