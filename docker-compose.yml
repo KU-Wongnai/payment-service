@@ -1,6 +1,22 @@
 version: "3.9"
 services:
-  redis:
+  payment_service_server:
+    container_name: payment_service_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8095:8095"
+    environment:
+      REDIS_HOST: persist_redis
+      REDIS_PORT: 6379
+      OMISE_SECRET_KEY: ${OMISE_SECRET_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+    networks:
+      - ku-wongnai_ku-wongnai
+      - payment_network
+
+  persist_redis:
     image: "redis:alpine"
     ports:
       - "6380:6379"
@@ -14,6 +30,14 @@ services:
         - ping
       retries: 3
       timeout: 5s
+    networks:
+      - payment_network
 
 volumes:
   db_redis:
+
+networks:
+  ku-wongnai_ku-wongnai:
+    external: true
+  payment_network:
+    driver: bridge
